@@ -1,0 +1,347 @@
+Golang workshop - 1ª Parte
+
+Montevideo
+Julio 2018
+
+Diego Romero
+Andrés Sica
+
+
+* ¿Quienes Somos?
+
+.image ./resources/diego_andy.png 400 _
+
+* WIFI
+
+Red -> guest
+
+Pass: meli12345
+
+* Presentación 
+
+http://bit.ly/2rCH9Af
+
+
+* Caso de uso
+
+.image ./resources/caso_de_uso.png
+
+* ¿Qué es la api de locations?
+
+Servicios:
+
+- Geolocalización por IP
+- Información de las locaciones en las que trabaja MercadoLibre (países, estados, ciudades,etc)
+- ABM árboles de locaciones
+
+Tráfico: ~ 300K RPM (100% de lecturas, escrituras ocasionales)
+
+* Platform
+
+- Fury + Servicios
+
+.image ./resources/fury_plat.png
+
+* Migración Locations API 
+
+0) Arquitectura Original
+
+.image ./resources/loc_0.png
+
+* Migración Locations API 
+
+1) Agregamos Persistencia en Key Value, Golden Gate y Sincronizador KV/RDBS
+
+.image ./resources/loc_1.png
+
+* Migración Locations API 
+
+2) Redirigimos tráfico de VIR a versión de Golang y matamos pooles innecesarios
+
+.image ./resources/loc_2.png
+
+* Migración Locations API 
+
+3) Probamos gradualmente de sacar el Varnish con buen resultado
+
+.image ./resources/loc_3.png
+
+* Migración Locations API 
+
+4) Migramos KV y API a Multi DC y matamos ATL
+
+.image ./resources/loc_4.png
+
+* Migración Locations API 
+
+5) Matamos replica RDBS -> KV y dejamos KV -> RDBS como backup
+
+.image ./resources/loc_5.png
+
+* Migración Locations API 
+
+7)Matamos replica KV -> RDBS 
+
+.image ./resources/loc_6.png
+
+* Migración Locations API 
+
+Resúmen
+
+.image ./resources/loc_resumen.png
+
+* Migración Locations API 
+
+Ahorros en hardware
+
+.image ./resources/locations_hardware.png
+
+* Migración Locations API 
+
+.image ./resources/locations_metrics.png
+
+
+* Golang
+
+
+* ¿Paradigma?
+
+- Imperativo
+- Estructurado
+- No orientado a objetos (¿?)
+
+: similar a c/c++, no solo en sintaxis sino tambien en sus casos de uso
+
+
+* Go Basics
+
+- Compilado
+- Fuertemente tipado
+- Funciones son First Class types
+- Punteros
+- GC
+- “Semi” Orientado a objetos (Interfaces / Composition)
+- Built in Testing framework
+- Built in Web Server
+
+: compilado a assembly como c/c++, fast!, corre sin dependencia de virtual machine o runtime	
+: tipado estatico, da mas info al compilador, fast!
+: ejemplo de type inference https://tour.golang.org/basics/14
+: pasaje siempre por valor, punteros para pasar referencias
+
+
+* Instalando GO!
+
+- Descarga la versión para tu OS ([[https://golang.org/dl/][Link]])
+- Ejecutar instalador, Golang quedará instalado por default en -> /usr/local/go
+- Exportar GOROOT apuntando a directorio de instalación, agregar  GOROOT/bin al PATH y LISTO :)
+- go version
+- go env
+
+
+* ¿Donde programar?
+
+- [[https://github.com/joefitzgerald/go-plus][Plugin para Atom]]
+- [[https://goclipse.github.io][Plugin para Eclipse]]
+- [[https://plugins.jetbrains.com/plugin/9568-go][Plugin para IntelliJ]]
+- [[https://github.com/DisposaBoy/GoSublime][Plugin para Sublime]]
+- [[https://github.com/Microsoft/vscode-go][Plugin para Visual Studio Code]]
+- [[https://github.com/visualfc/liteide][Lite Ide: Go IDE]]
+- [[https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins][Varios mas... ]]
+
+
+* Go Basics: Workspace
+
+GOPATH
+	|_ BIN: Contiene los archivos ejecutables
+	|_ SRC: Contiene los fuentes organizados en paquetes
+	|_ PKG: Contiene los paquetes en formato binario
+
+*Default* *GOPATH* (go >1.8)
+
+- Unix: $HOME/go 
+- Windows: %USERPROFILE%/go
+
+: si no queremos usar el workspace default hay que setear la variable de ambiente GOPATH
+: WARNING: Go está pensado para trabajar con un único workspace (GOPATH) con muchos proyectos/repos, en vez de un workspace por proyecto/repo
+: go command compila e instala en pkg y bin, por eso hay que mantener esa estructura de directorios por convencion
+
+
+* Hello world!!
+
+.play -edit ./resources/src/00_hello_world/main.go
+
+: entry point: package main / func main
+: workspace -> repos -> packages (single directory con 1 o mas go files; el path al directory relativo al workspace es el "import path"). Debe ser único por eso se recomienda usar como base path github.com/user o el source control que sea (aparte de que permite a go get descargar la dependencia)
+: vendor para controlar versiones de dependencias y cuando actualizarlas
+: import no usado patea
+: go command https://golang.org/cmd/go. go run/build/install/test
+: visibilidad: mayus = exported
+
+
+
+* Tipos Básicos
+
+- bool
+- string
+- int  int8  int16  int32  int64
+- uint uint8 uint16 uint32 uint64 uintptr
+- byte // alias for uint8
+- rune // alias for int32 - unicode code point
+- float32 float64
+- complex64 complex128
+
+
+* Variables y constantes
+
+	var s string
+	var s string = ""
+	var s = ""
+	s := ""
+	const World = "世界"
+	const Truth = true
+
+: variable que no se usa patea
+
+*Zero* *value:*
+
+*0* para numéricos
+*false* para booleanos
+*""* para strings
+
+#.play -edit ./resources/src/01_zero_values/main.go
+
+* Funciones
+
+.play -edit ./resources/src/03_functions/main.go
+
+: curly brackets define a new stack frame and therefore a new level of scope, p ej si hago err := en vez de err = dentro del if
+
+
+#* Conversión de variables
+
+#.play -edit ./resources/src/05_variables_type_convertion/main.go
+
+
+* Collections #1
+
+Arrays
+
+.play -edit ./resources/src/09_collections/1/main.go
+
+: si al array b le agrego 1 elemento mas la comparacion da error porque no coinciden los tipos, porque el tamaño del array forma parte del tipo
+
+
+* Collections #2
+
+Slices
+
+	months := []string{1: "January", /* ... */, 12: "December"}
+	Q2 := months[4:7]                                      
+	summer := months[6:9]
+
+.image ./resources/slices.png _ _
+
+
+* Collections #2 (cont.)
+
+Slices
+
+.play -edit ./resources/src/09_collections/2/main.go
+
+* Collections #3
+
+Maps
+
+.play -edit ./resources/src/09_collections/3/main.go
+
+: recordar que cuando retorna mas de 1 param puedo descartar el primero (_) o el segundo (omitir)
+
+* Tipos de if
+
+_If_
+
+	if x < 0 { }
+
+
+_If..._else_
+
+	if ... {} else { }
+
+_If_with_init_
+
+	if v := math.Pow(x, n); v < lim {}
+
+	
+* Tipos de for
+
+_for_
+
+ for i := 0; i < len(args); i++ {
+
+_while_
+
+ for i < len(args) {
+
+_while_true_
+
+ for {
+
+_foreach_
+
+ for _, value := range args {
+
+#* Iteraciones #1
+
+#_for_initialization;_condition;_post_{_}_
+
+#.play -edit ./resources/src/02_iterations/0/main.go
+
+#* Iteraciones #2
+
+#_for_condition_{_}_
+
+#.play -edit ./resources/src/02_iterations/1/main.go
+
+#* Iteraciones #3
+
+#_for_{_}_
+
+#.play -edit ./resources/src/02_iterations/2/main.go
+
+#* Iteraciones #4
+
+#_using_range_
+
+#.play -edit ./resources/src/02_iterations/3/main.go
+
+* Switch
+
+.play -edit ./resources/src/02_iterations/4/main.go
+
+: no lleva break (cuando uno matchea retorna), puede llevar fallthrough
+: se puede usar sin condicion y que los cases sean las condiciones
+: se puede usar para evaluar tipos .(type)
+
+* Defer
+
+.play -edit ./resources/src/13_defer/main.go
+
+: The deferred call's arguments are evaluated immediately, but the function call is not executed until the surrounding function returns.
+: When a function returns, its deferred calls are executed in LIFO order
+
+* Recover
+
+.play -edit ./resources/src/16_recover/main.go /START OMIT/,/END OMIT/
+
+: tipicamente no se usa panic/recover, el error handling se hace con:
+: - error values: usar constantes de tipo error (errors.New()) y en el caller chequear con if o switch
+: - error types: usar structs que implementen error y en el caller type switch o type assertion chequeando si dio ok
+: podriamos usar closure (p.ej. function pasada a defer q acceda a named return argument para modificar el valor retornado)
+
+* Ejercicio 1
+
+Funcion que retorne un slice con los numeros del 1 al 100 que sean múltiplos de 3 y 5
+
+.play -edit ./resources/src/exercises/part1/main.go /START OMIT/,/END OMIT/
+
