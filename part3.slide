@@ -108,7 +108,13 @@ los consumers pueden chequear el status de un channel mediante un segundo parám
 
 * Ejercicio
 
-Dado un array de distintos strings, contar de forma concurrente la aparición de letras entre todos los strings dados.
+Dado un array de strings, contar de forma concurrente la aparición de letras entre todos los strings dados.
+
+Tip, para recorrer las letras de un string:
+
+	for _, l := range word {
+		print(string(l))
+	}
 
 .play -edit ./resources/src/exercises/part3/main.go /START OMIT/,/END OMIT/
 
