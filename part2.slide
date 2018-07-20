@@ -1,0 +1,131 @@
+Golang workshop - 2ª Parte
+
+Montevideo
+Julio 2018
+
+Diego Romero
+Andrés Sica
+
+* Presentación 
+
+http://bit.ly/2rCH9Af
+
+* Funciones continuación
+
+.play ./resources/src/03_functions/removeAll.go
+
+* Ejercicio
+Crear la función *split* en *go* tal que reciba un array y una funcion de condicion por parametro, y retorne 2 arrays, uno con los elementos que cumplen con esa condición y otro con los que no la cumplan.
+
+.play -edit ./resources/src/03_functions/split.go /^func main/,/^}/
+
+* Funciones continuación (generator / yield)
+
+.play ./resources/src/03_functions/generator.go
+
+* Punteros
+
+.play ./resources/src/06_pointers/example.go
+
+* Structs
+
+Ejemplo: Árbol
+
+    type tree struct {
+        value       int
+        left, right *tree
+    }
+
+Ejemplo: Lista enlazada
+
+    type listNode struct {
+        value int
+        next *listNode
+    }
+
+* Structs - métodos
+
+	type tree struct {
+		value       int
+		left, right *tree
+	}
+
+	func add(t *tree, value int) *tree {
+		if t == nil {
+			t = new(tree)
+			t.value = value
+			return t
+		}
+		if value < t.value {
+			t.left = add(t.left, value)
+		} else {
+			t.right = add(t.right, value)
+		}
+		return t
+	}
+
+
+* Interfaces
+
+.play ./resources/src/11_interfaces/1/main.go
+
+* Interfaces continuación
+
+	type Flash struct {
+		Alias string
+		Age   int
+	}
+
+	func (s *Flash) Powers() {
+		fmt.Printf("%s powers: %s", s.Alias, "speed")
+	}
+
+* Interfaces continuación
+
+.play ./resources/src/11_interfaces/2/main.go /^func main/,/^}/
+
+* Composition
+
+	type SuperHero interface {
+		Powers()
+	}
+
+	type Superman struct {
+		Alias string
+		Age   int
+	}
+
+	func (s *Superman) Powers() {
+		fmt.Printf("%s powers: %s", s.Alias, "invulnerability, heat vision, flight, speed")
+	}
+
+	type SuperBoy struct {
+		Superman
+	}
+
+* Composition continuación
+
+.play ./resources/src/15_composition/1/main.go /^func main/,/^}/
+
+* Composition continuación
+
+	type SuperBoy struct {
+	    Superman
+	}
+
+	func (s *SuperBoy) Powers() string {
+	    return fmt.Sprintf("powers: %s", "flight")
+	}
+    
+.play ./resources/src/15_composition/2/main.go /^func main/,/^}/
+
+* Ejercicio
+Modelar	la	funcionalidad	para	un	sistema	de	cines	que	calcule	los	ingresos	netos	de	una	función	
+en	base	a	los	asistentes	y	al	precio	base	de	la	entrada.	Existen	3 tipos de	asistentes	y	tienen	las	
+siguientes	características:
+
+- *Normales*:	Pagan	el	100%
+- *Jubilados*:	Tienen	un 50%	de	descuento
+- *Invitados*:	No	pagan	nada
+
+.play -edit ./resources/src/exercises/3/main.go /^func main/,/^}/
