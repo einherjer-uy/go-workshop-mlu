@@ -1,0 +1,99 @@
+Golang workshop - 4ª Parte
+
+Montevideo
+Julio 2018
+
+Diego Romero
+Andrés Sica
+
+
+* Presentación 
+
+http://bit.ly/2rCH9Af
+
+* Patrones de concurrencia
+
+* Generator: retornando un canal
+
+.play -edit ./resources/src/14_gorutines/generatorcount.go /START1/,/STOP1/
+.code ./resources/src/14_gorutines/generatorcount.go /START2/,/STOP2/
+
+* Multiplexing | Fan in
+
+.image ./resources/gophermegaphones.jpg
+
+* Multiplexing | Fan in
+
+.code /resources/src/14_gorutines/fanincount.go /START3/,/STOP3/
+.play -edit /resources/src/14_gorutines/fanincount.go /START1/,/STOP1/
+
+* Multiplexing | Fan in - con select
+
+.play -edit /resources/src/14_gorutines/selectcount.go /START3/,/STOP3/
+
+* Multiplexing | Fan in - con select y timeout
+
+.play -edit /resources/src/14_gorutines/selectcounttimeout.go /START1/,/STOP1/
+
+* Cortar la produccion utilizando un canal
+
+.code /resources/src/14_gorutines/quit.go /START1/,/STOP1/
+.play -edit /resources/src/14_gorutines/quit.go /START2/,/STOP2/
+
+* Daisy chain
+
+.image ./resources/gophereartrumpet.jpg
+
+* Daisy chain
+
+.play -edit /resources/src/14_gorutines/daisy.go /func/,$
+
+* Algunos usos de canales: Rate limiter
+
+.code /resources/src/14_gorutines/ratelimiter.go /START1/,/STOP1/
+.play -edit /resources/src/14_gorutines/ratelimiter.go /START2/,/STOP2/
+
+* Algunos usos de canales: Rate limiter burst
+
+.play -edit /resources/src/14_gorutines/burstratelimiter.go /START2/,/STOP2/
+
+* Race condition
+
+.play -edit /resources/src/23_race_condition/example.go /func/,$
+
+* Race condition fix con mutex
+
+.play -edit /resources/src/23_race_condition/mutex.go /func/,$
+
+* Race condition fix con atomic
+
+.play -edit /resources/src/23_race_condition/atomic.go /func/,$
+
+* Common mistakes
+
+* Modificar elementos de una lista con go routines
+
+.play -edit /resources/src/14_gorutines/listrange.go
+
+* Modificar elementos de una lista con go routines
+
+.play -edit /resources/src/14_gorutines/listrangefixed.go
+
+* Deadlock
+
+.play -edit /resources/src/22_channels/deadlock.go
+
+* Go routine leak
+
+.code /resources/src/14_gorutines/leak.go /START1/,/STOP1/
+
+.code /resources/src/14_gorutines/leak.go /START2/,/STOP2/
+
+* Go routine leak
+
+.play -edit /resources/src/14_gorutines/leak.go /START3/,/STOP3/
+
+* Go routine leak fix
+
+.code /resources/src/14_gorutines/leakfix.go /START1/,/STOP1/
+.play -edit /resources/src/14_gorutines/leakfix.go /START3/,/STOP3/

@@ -2,19 +2,13 @@ package main
 
 import "fmt"
 
-func sumWithLimit(x, y, limit int) (sum int, err error) {
-	sum = x + y
-	if sum > limit {
-		err = fmt.Errorf("limit exceeded")
-	}
-	return
+func swap(x, y string) (string, string) {
+	return y, x
 }
 
 func main() {
-	sum, err := sumWithLimit(1, 2, 2)
-	if err != nil {
-		fmt.Println(err.Error())
-	} else {
-		fmt.Println(sum)	
-	}
+	a, b := swap("hello", "world")
+	fmt.Println(a, b)
+	a, b = b,a
+	fmt.Println(a, b)
 }
