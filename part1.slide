@@ -21,7 +21,6 @@ meli / meli12345
 
 https://bit.ly/2LkLVhd
 
-
 * Caso de uso
 
 .image ./resources/caso_de_uso.png
@@ -355,9 +354,14 @@ _foreach_
 : - error types: usar structs que implementen error y en el caller type switch o type assertion chequeando si dio ok (ej: if apiErr, ok := err.(apierrors.MyApiError); ok {)
 : podriamos usar closure (p.ej. function pasada a defer q acceda a named return argument para modificar el valor retornado)
 
-* Ejercicio 1
+* Preguntas?
+.image ./resources/questions.jpg
+
+* Hands-on
 
 Funcion que retorne un slice con los numeros del 1 al 100 que sean múltiplos de 3 y 5
 
 .play -edit ./resources/src/exercises/part1/main.go /START OMIT/,/END OMIT/
 
+* Vamos a un break
+.image ./resources/break.png

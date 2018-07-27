@@ -36,6 +36,6 @@ func concurrentCharFreq(words []string) map[string]int{
 
 // START OMIT
 func main(){
-	fmt.Println(concurrentCharFreq([]string{"hola", "chau", "chorizo"}))
+	fmt.Println(concurrentCharFreq([]string{"hola", "chau", "test"})) // HL
 }
 // END OMIT

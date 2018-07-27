@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-    counter := new(int)
+    var counter int
     var mu sync.Mutex // HL
     var wg sync.WaitGroup
 
@@ -17,9 +17,9 @@ func main() {
             mu.Lock() // HL
             defer mu.Unlock() // HL
             defer wg.Done()
-            *counter = *counter + 1
+            counter = counter + 1
         }(producerId)
     }
     wg.Wait()           // wait for the N producers
-    fmt.Println(*counter)
+    fmt.Println(counter)
 }

@@ -8,9 +8,9 @@ func main() {
 	a := 10
 
 	increment(a)
-	fmt.Printf("After increment method -> value: %d \n", a)
+	fmt.Printf("Pasando por valor -> value: %d \n", a)
 	incrementPointer(&a)
-	fmt.Printf("After incrementPointer method -> value: %d \n", a)
+	fmt.Printf("Pasando por referencia -> value: %d \n", a)
 }
 
 func increment(a int) {
