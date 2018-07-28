@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-    counter := new(int)
+    var counter int
 	var wg sync.WaitGroup
 	
     // multiple producers
@@ -16,7 +16,7 @@ func main() {
         // spawn a new counter
         go func(producerId int) {
             defer wg.Done()
-            *counter = *counter + 1
+            counter = counter + 1
         }(producerId)
     }
 
@@ -24,5 +24,5 @@ func main() {
     wg.Wait()
 
     // check expected value
-    fmt.Println(*counter)
+    fmt.Println(counter)
 }

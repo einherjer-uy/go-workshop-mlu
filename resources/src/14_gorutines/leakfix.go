@@ -34,7 +34,7 @@ func getMessage() string{
 func message(nombre string) <-chan string{
 	c := make(chan string, 1) // HL
 
-	go func(){ c <- nombre}()
+	go func(){ c <- nombre }()
 
 	return c
 }
