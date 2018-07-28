@@ -114,10 +114,14 @@ los consumers pueden chequear el status de un channel mediante un segundo parám
 
 .play -edit ./resources/src/22_channels/synchronization/select/main.go /START OMIT/,/END OMIT/
 
+* Preguntas?
+.image ./resources/questions.jpg
 
-* Ejercicio
+* Hands-on
 
 Dado un array de strings, contar de forma concurrente la aparición de letras entre todos los strings dados.
+
+.play -edit ./resources/src/exercises/part3/main.go /START OMIT/,/END OMIT/
 
 Tip, para recorrer las letras de un string:
 
@@ -125,5 +129,5 @@ Tip, para recorrer las letras de un string:
 		print(string(l))
 	}
 
-.play -edit ./resources/src/exercises/part3/main.go /START OMIT/,/END OMIT/
-
+* Vamos a un break
+.image ./resources/break.png

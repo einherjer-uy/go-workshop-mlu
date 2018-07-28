@@ -7,7 +7,7 @@ func gen (initial int) func() int {
 
 	return func() int {
 		a++
-		return a;
+		return a
 	}
 }
 

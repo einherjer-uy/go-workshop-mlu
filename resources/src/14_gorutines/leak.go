@@ -20,12 +20,11 @@ func getMessage() string{
 	a := message("a")
 	b := message("b")
 
-	partial := <- a
-
-	if(partial != ""){
-		return partial
-	}else{
-		return <-b
+	select{
+		case adata := <-a:
+			return adata
+		case bdata := <-b:
+			return bdata
 	}
 }
 // STOP2 OMIT
@@ -34,7 +33,7 @@ func getMessage() string{
 func message(nombre string) <-chan string{
 	c := make(chan string)
 
-	go func(){ c <- nombre}()
+	go func(){ c <- nombre }()
 
 	return c
 }

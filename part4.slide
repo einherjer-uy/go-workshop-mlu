@@ -57,7 +57,7 @@ https://bit.ly/2v3N8hM
 
 .play -edit ./resources/src/14_gorutines/burstratelimiter.go /START2/,/STOP2/
 
-* Race condition
+* RC
 
 .play -edit ./resources/src/23_race_condition/example.go /func/,$
 
@@ -95,5 +95,11 @@ https://bit.ly/2v3N8hM
 
 * Go routine leak fix
 
-.code ./resources/src/14_gorutines/leakfix.go /START1/,/STOP1/
-.play -edit ./resources/src/14_gorutines/leakfix.go /START3/,/STOP3/
+.code /resources/src/14_gorutines/leakfix.go /START1/,/STOP1/
+.play -edit /resources/src/14_gorutines/leakfix.go /START3/,/STOP3/
+
+* Preguntas?
+.image ./resources/questions.jpg
+
+* That's all
+.image ./resources/break.png
