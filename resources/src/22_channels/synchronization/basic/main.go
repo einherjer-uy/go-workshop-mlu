@@ -19,7 +19,7 @@ func main() {
 		}(i)
 	}
 	
-	for {
+	for i:=0; i<100; i++ {
 		work <- rand.Intn(10)
 		time.Sleep(time.Second)
 	}
