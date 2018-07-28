@@ -4,14 +4,13 @@ import (
 	"fmt"
 )
 
-func multiples(to int) []int {
-	var result []int
+func multiples(to int) (result []int) {
 	for i := 0; i <= to; i++ {
 		if i%3 == 0 && i%5 == 0 {
 			result = append(result, i)
 		}
 	}
-	return result
+	return
 }
 
 // START OMIT

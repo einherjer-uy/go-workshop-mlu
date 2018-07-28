@@ -21,8 +21,16 @@ Una excelente charla!
 Rob Pike (Co-Creador de Go)
 .link https://blog.golang.org/concurrency-is-not-parallelism
 
+: concurrency - composition of independently executing processes
+: paralallism - simultaneous execution
+: Ej. el SO se estructura para q varios IO devices puedan ejecutar concurrentemente pero no necesariamente en paralelo (si tengo 1 CPU).
+: concurrency permite estructurar para poder aprovechar el paralelismo (aunque lo ejecutes en 1 solo cpu podes usar las features de go)
+: concurrency facilita escribir codigo concurrente sin errores. (Go soporta concurrencia en el lenguaje, no en una libreria, eso cambia como estructuramos el programa, permite estructurar la concurrencia a un nivel de abstraccion superior)
+
 
 * Goroutines
+
+Funcion que se ejecuta de forma independiente (posiblemente en paralelo), en el mismo espacio de memoria y con su propio stack.
 
 .play -edit ./resources/src/14_gorutines/main.go
 
@@ -35,7 +43,7 @@ Rob Pike (Co-Creador de Go)
 
 * Channels
 
-Un channel en Golang es un tipo de dato, que nos permite enviar y recibir mensajes a través de él.
+Un channel en Golang es un tipo de dato, que nos permite enviar y recibir mensajes a través de él, tipicamente para comunicar y sincronizar goroutines.
 
 Creación de un channel:
 
@@ -49,7 +57,7 @@ y recibir información desde él:
 
 	var s string = <- sChannel
 
-los channels son bloqueantes; cada vez que escribimos información en un channel el emisor se bloquea hasta que un receptor lee el mensaje del channel. Esto los hace una excelente herramienta para sincronizar goroutines sin un mecanismo de lock especifico.
+los channels son bloqueantes; el receptor se bloquea hasta que haya un mensaje y el emisor se bloquea hasta que haya un receptor. Esto los hace una excelente herramienta para sincronizar goroutines sin un mecanismo de lock especifico.
 
 
 * Channels (cont.)
@@ -58,7 +66,7 @@ A la creación de un channel se le puede asignar un tamaño dando lugar a un buf
  
 	var sChannel chan string = make(chan string, 100)
  
-en estos casos el emisor sólo se bloqueará cuando el buffer esté lleno, y el receptor se bloqueará sólo cuando esté vacío.
+en estos casos el emisor sólo se bloqueará cuando el buffer esté lleno (y el receptor, al igual que con unbuffer, se bloqueará cuando el channel esta vacio)
  
 Para iterar sobre el contenido de un channel podemos utilizar el for + range:
  
@@ -85,7 +93,8 @@ los consumers pueden chequear el status de un channel mediante un segundo parám
 .play -edit ./resources/src/22_channels/simple/main.go
 
 : funcion anonima, muy usado para tener en un solo lugar que es lo que esta corriendo en la goroutina 
-: mostrar deadlock sin hago sChannel <- "hello" fuera de goroutina, pero no si es buffered
+: deadlock sin hago sChannel <- "hello" fuera de goroutina (porque se bloquea en el envio y no hay nadie que lea)
+: si es buffered no se bloquea (podria hacer el print 2 veces, pero no 3, ahi estaria de nuevo en deadlock porque no hay nadie escribiendo)
 
 
 * Channel Synchronization
@@ -93,7 +102,7 @@ los consumers pueden chequear el status de un channel mediante un segundo parám
 .play -edit ./resources/src/22_channels/synchronization/basic/main.go /START OMIT/,/END OMIT/
 
 : mostrar que si en vez de pasar id por param uso el i del range imprime siempre worker 3 que es el valor del indice el range al momento q la goroutina se ejecuta
-: mostrar que el channel si lo accedo como closure
+: mostrar que el channel si lo accedo como closure (si no fuese una funcion anonima tendria que pasarlo por param)
 
 
 * Channel Synchronization

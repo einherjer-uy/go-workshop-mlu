@@ -10,7 +10,7 @@ func main() {
 	work := []int{1, 2, 3, 4, 5}
 	out := make(chan int)
 
-	for w := range work {
+	for _, w := range work {
 		go func(w int) {
 			time.Sleep(time.Second)
 			out <- w*10

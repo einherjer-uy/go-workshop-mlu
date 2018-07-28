@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func charFreq(word string) map[string]int{
+func charFreq(word string) map[string]int {
  	freq := make(map[string]int)
 	
 	for _, l := range word {
@@ -19,9 +19,9 @@ func concurrentCharFreq(words []string) map[string]int{
 	c := make(chan map[string]int, len(words))
 	
 	for _, word := range words{
-		go func(word string, c chan map[string]int){
+		go func(word string){
 			c <- charFreq(word)
-		}(word, c)
+		}(word)
 	}
 	
 	for i:=0; i<len(words); i++ {

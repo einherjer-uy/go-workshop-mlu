@@ -10,14 +10,14 @@ func main() {
     work := []int{1, 2, 3, 4, 5}
     out := make(chan int)
 
-    for w := range work {
+    for _, w := range work {
         go func(w int) {
-            time.Sleep(time.Millisecond * time.Duration(w) * 100)
+            time.Sleep(time.Duration(w*100) * time.Millisecond)
             out <- w*10
         }(w)
     }
 
-	timeout := time.After(time.Millisecond * 300)
+	timeout := time.After(300 * time.Millisecond)
     for i:=0; i<len(work); i++ {
         select {
         case v := <- out:

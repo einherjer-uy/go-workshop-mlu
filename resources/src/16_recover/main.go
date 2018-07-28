@@ -40,10 +40,6 @@ func panicFunc(x int){
 			fmt.Printf("Panic recovered. Error was: %v\n",err)
 		}
 	}()
-	otherFunc(x)
-}
-
-func otherFunc(x int) {
 	if x == 3 {
 		panic(errors.New("pannnnic"))	
 	}

@@ -42,6 +42,14 @@ Tráfico: ~ 300K RPM (100% de lecturas, escrituras ocasionales)
 
 .image ./resources/fury_plat.png
 
+: contexto
+: 2000 apps, 200 db, 20K instancias
+: microservicios
+: equipos responsables end-to-end del producto (lean/mericas vs gestion) y las apps/datos (incl. test, monitoreo, support, etc)
+: apps interactuan via apis/feeds (ojo resilencia), PR cross team cuando tiene sentido
+: equipos cross (ux, "infra", "devops")
+: grails -> go, java
+
 * Migración Locations API 
 
 0) Arquitectura Original
@@ -109,9 +117,11 @@ Ahorros en hardware
 - Imperativo
 - Estructurado
 - No orientado a objetos (¿?)
+- concurrent execution (goroutines)
+- synchronization and messaging (channels)
+- multi-way concurrent control (select)
 
 : similar a c/c++, no solo en sintaxis sino tambien en sus casos de uso
-
 
 * Go Basics
 
@@ -173,11 +183,11 @@ GOPATH
 
 : entry point: package main / func main
 : workspace -> repos -> packages (single directory con 1 o mas go files; el path al directory relativo al workspace es el "import path"). Debe ser único por eso se recomienda usar como base path github.com/user o el source control que sea (aparte de que permite a go get descargar la dependencia)
+: Un directory puede tener mas de un file go (todos declarando el mismo package) / Se estila que el nombre del package coincida con el del folder del import path.
 : vendor para controlar versiones de dependencias y cuando actualizarlas
 : import no usado patea
-: go command https://golang.org/cmd/go. go run/build/install/test
 : visibilidad: mayus = exported
-
+: go command https://golang.org/cmd/go. go run/build/install/test
 
 
 * Tipos Básicos
@@ -215,6 +225,7 @@ GOPATH
 
 .play -edit ./resources/src/03_functions/main.go
 
+: pasaje por valor pero puedo pasar punteros, incluso a tipos primitivos
 : curly brackets define a new stack frame and therefore a new level of scope, p ej si hago err := en vez de err = dentro del if
 
 
@@ -242,6 +253,8 @@ Slices
 
 .image ./resources/slices.png _ _
 
+: implica que puedo pasar un slice por param sin miedo a copiar un monton de memoria (no asi con un map)
+
 
 * Collections #2 (cont.)
 
@@ -256,6 +269,7 @@ Maps
 .play -edit ./resources/src/09_collections/3/main.go
 
 : recordar que cuando retorna mas de 1 param puedo descartar el primero (_) o el segundo (omitir)
+
 
 * Tipos de if
 
@@ -327,7 +341,9 @@ _foreach_
 
 .play -edit ./resources/src/13_defer/main.go
 
+: especie de finally
 : The deferred call's arguments are evaluated immediately, but the function call is not executed until the surrounding function returns.
+: puede ser func o closure
 : When a function returns, its deferred calls are executed in LIFO order
 
 * Recover
@@ -336,7 +352,7 @@ _foreach_
 
 : tipicamente no se usa panic/recover, el error handling se hace con:
 : - error values: usar constantes de tipo error (errors.New()) y en el caller chequear con if o switch
-: - error types: usar structs que implementen error y en el caller type switch o type assertion chequeando si dio ok
+: - error types: usar structs que implementen error y en el caller type switch o type assertion chequeando si dio ok (ej: if apiErr, ok := err.(apierrors.MyApiError); ok {)
 : podriamos usar closure (p.ej. function pasada a defer q acceda a named return argument para modificar el valor retornado)
 
 * Ejercicio 1
